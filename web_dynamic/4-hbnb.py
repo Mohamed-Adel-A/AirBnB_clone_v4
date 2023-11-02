@@ -44,4 +44,4 @@ def hbnb_0():
 
 if __name__ == "__main__":
     """ Main Function """
-    app.run(host='0.0.0.0', port=int(environ.get("HBNB_API_PORT")))
+    app.run(host='0.0.0.0', port=5000)
