@@ -97,16 +97,17 @@
 }
 
 .user {
-  margin-bottom: 1.5%;
+	margin-bottom: 1.5%;
 }
 
 .reviews {
-    margin-bottom: 5%;
+    margin-top: 5%;
 }
 
 .reviews h2{
     font-size: 16px;
 	border-bottom: 1px solid #DDDDDD;
+	text-align:left;
 }
 
 .places .reviews>ul {
@@ -125,7 +126,6 @@
 }
 
 .places .reviews ul li p {
-    padding-bottom: 5%;
     margin-top: 0px;
 	font-size: 12px;
 }
