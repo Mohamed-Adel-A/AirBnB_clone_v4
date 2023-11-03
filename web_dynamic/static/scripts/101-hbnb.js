@@ -112,15 +112,6 @@ function getPlaces(params = {}) {
           <h2>Reviews</h2>
             <span data-id="${place.id}" class="show_hide_review">show</span>
             <ul data-id="${place.id}"></ul>
-            <li>
-            <h3>From Bob Dylan the 27th January 2017</h3>
-            <p>Runshi is an epic host. Nothing more I can say. 5 star!</p>
-            </li>
-            <li>
-            <h3>From Connor the 4th January 2017</h3>
-            <p>Highly recommended!</p>
-            </li>
-            </ul>
         </div>
 			</article>`);
       });
