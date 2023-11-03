@@ -111,7 +111,7 @@ function getPlaces(params = {}) {
 				</div>
         <div class="reviews" data-id="${place.id}">
           <h2>Reviews</h2>
-            <span data-id="${place.id}" class="show_hide_review">show</span>
+	    <span data-id="${place.id}" onclick="showHideReview(\'${place.id}\');">show</span>
             <ul data-id="${place.id}"></ul>
         </div>
 			</article>`);
@@ -120,41 +120,50 @@ function getPlaces(params = {}) {
   });
 }
 
-function showHideReview() {
-  $(".reviews .show_hide_review").click(function () {
-    const placeId = $(this).data('id');
-    if ($(this).text() == "show") {
-      $(this).text("hide");
-      const url = `http://0.0.0.0:5001/api/v1/places/${placeId}/reviews`
-      $.get(url, function(data) {
-        $(`.reviews h2`).html(`${data.length} Reviews`);
-        for (const review of data) {
-          let userName = ""
-          if (review.user_id) {
-            const userUrl = `http://0.0.0.0:5001/api/v1/users/${review.user_id}`;
-            $.get(userUrl, function (userData, status) {
-              if (status == "success") {
-                userName = `${userData.first_name} ${userData.last_name}`;
-              }
-            });
-            const date = new Date(review.created_at);
-            const month = date.toLocaleString('en', { month: 'long' });
-            const day = dateOrdinal(date.getDate());
-            $(`.reviews ul[data-id|=${placeId}]`).append(`
-            <li>
-              <h3>From ${userName} the ${day + ' ' + month + ' ' + date.getFullYear()}</h3> 
-              <p>${review.text}</p>
-            </li>
-            `);
-          }
-        }
-      });
-    } else {
-      $(this).text("show");
-      $(`.reviews ul[data-id|=${placeId}]`).empty();
-      $(`.reviews h2`).html("Reviews");
-    }
-  });
+function dayOrdinal(day) {
+	if (day > 3 && day < 21)
+		return (day + 'th');
+	switch (day % 10) {
+		case 1:  return (day + "st");
+		case 2:  return (day + "nd");
+		case 3:  return (day + "rd");
+		default: return (day + "th");
+	}
+}
+
+function showHideReview(placeId) {
+	showHide = $(`span[data-id|=${placeId}]`);
+	if (showHide.text() == "show") {
+		showHide.text("hide");
+		const url = `http://0.0.0.0:5001/api/v1/places/${placeId}/reviews`
+		$.get(url, function(data) {
+			$(`.reviews[data-id|=${placeId}] h2`).html(`${data.length} Reviews`);
+			for (const review of data) {
+				let userName = ""
+				if (review.user_id) {
+					const userUrl = `http://0.0.0.0:5001/api/v1/users/${review.user_id}`;
+					$.get(userUrl, function (userData, status) {
+						if (status == "success") {
+							userName = `${userData.first_name} ${userData.last_name}`;
+						}
+					});
+					const date = new Date(review.created_at);
+					const month = date.toLocaleString('en', { month: 'long' });
+					const day = dayOrdinal(date.getDate());
+					$(`.reviews[data-id|=${placeId}] ul`).append(`
+					<li>
+						<h3>From ${userName} the ${day + ' ' + month + ' ' + date.getFullYear()}</h3> 
+						<p>${review.text}</p>
+					</li>
+					`);
+				}
+			}
+		});
+	} else {
+		showHide.text("show");
+		$(`.reviews[data-id|=${placeId}] ul`).empty();
+		$(`.reviews[data-id|=${placeId}] h2`).html("Reviews");
+	}
 }
 
 function setupSearch() {
