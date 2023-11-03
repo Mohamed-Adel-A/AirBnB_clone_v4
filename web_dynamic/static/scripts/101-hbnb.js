@@ -87,6 +87,7 @@ function getPlaces(params = {}) {
     dataType: 'json',
     success: function (places) {
       const placesSection = $('section.places');
+			placesSection.empty();
 
       places.forEach((place) => {
         placesSection.append(`<article>
